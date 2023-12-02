@@ -1,0 +1,7 @@
+ignore:
+  - example/*
+  - example/**/*
+  - tests/*
+  - tests/**/*
+  - build/_deps/*
+  - build/_deps/**/*
