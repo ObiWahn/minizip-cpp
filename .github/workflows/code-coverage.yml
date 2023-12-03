@@ -13,6 +13,10 @@ on:
 jobs:
   code-coverage:
     runs-on: ubuntu-latest
+    env:
+      CXX: /usr/bin/g++-13
+      GCOV: /usr/bin/gcov-13
+      CXXFLAGS: "--coverage -g -O0"
 
     steps:
     - uses: actions/checkout@v3
@@ -20,7 +24,7 @@ jobs:
     - run: cmake -E make_directory build
 
     - working-directory: build/
-      run: cmake $GITHUB_WORKSPACE -DMZPPTESTS=ON -DCMAKE_CXX_FLAGS="-coverage"
+      run: cmake $GITHUB_WORKSPACE -DMZPPTESTS=ON
 
     - working-directory: build/
       run: cmake --build .
@@ -28,5 +32,17 @@ jobs:
     - working-directory: build/
       run: ctest --output-on-failure
 
+## debug info
+    - run: echo "$GCOV $CXX"
+    - run: $CXX --version
     - working-directory: build/
-      run: bash <(curl -s https://codecov.io/bash)
+      run: find -iname "*.gcda" -o -iname "*.gcno"
+## debug info - end
+
+    - working-directory: build/
+      run: bash <(curl -s https://codecov.io/bash) -x $GCOV
+
+    #- name: Upload coverage reports to Codecov
+    #  uses: codecov/codecov-action@v3
+    #  env:
+    #    CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
