@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+clang-format-15 --verbose -i --files <(find . -type f -a \( -iname "*cpp" -o -iname "*hpp" \))
