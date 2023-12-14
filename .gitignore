@@ -1,1 +1,3 @@
+tests/foo*
 build*
+local_*
